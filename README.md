@@ -26,5 +26,6 @@ the following programs are required for the scripts to work
 ```
 	curl
 	Wget
+	mplayer
 ```
 
