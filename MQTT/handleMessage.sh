@@ -14,7 +14,10 @@ case $1 in
   porn)
     echo "e621 ?"
     ;;
-
+  kill)
+    echo "killing"
+    sh ~/domeScreens/MQTT/kill.sh
+    ;; 
   *)
     echo "error from" 
     echo $1
