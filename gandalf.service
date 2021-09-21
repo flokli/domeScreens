@@ -2,9 +2,9 @@
 Description=Start aquarium server
 
 [Service]
-WorkingDirectory=/home/richard/
+WorkingDirectory=modes/ganfalf.sh
 Type=forking
-ExecStart=/bin/bash run.sh
+ExecStart=/bin/bash gandalf.sh
 KillMode=process
 
 [Install]
