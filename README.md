@@ -1,15 +1,14 @@
-# domeScreens
-Cursed script
+# Dome Scripts
+Cursed and blesses scripts for Habitorium at Bornhack
 
 
-## modes
-```
-	 Gandalph
-	 e621	( Furry NSFW )
-	 e926	( SFW )
-	 Pink Fluffy Unicorns Dancing On Rainbows
-	 Ascii arts
-```
+## Modes
+-	 gandalf
+-	 gandalf-e621 (NSFW: sexy gandalf and furry)
+-	 e621	(NSFW: Furry)
+-	 e926	(SFW: Furry)
+-	 Pink Fluffy Unicorns Dancing On Rainbows
+-	 Ascii arts
 
 # MQTT 
 what is shown on the screens will be controlable form MQTT, somehting like so
@@ -27,5 +26,6 @@ the following programs are required for the scripts to work
 	curl
 	Wget
 	mplayer
+	termsaver
 ```
 

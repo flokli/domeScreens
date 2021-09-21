@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mplayer -fs -loop 0 /home/richard/Desktop/gandal.mp4 & 
-/home/richard/Desktop/e621.sh &
+mplayer -fs -loop 0 ../../videos/gandalf.mp4 & 
+e621/e621.sh &
