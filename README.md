@@ -1,6 +1,5 @@
 # Dome Scripts
-Cursed and blesses scripts for Habitorium at Bornhack
-
+Cursed and blesses scripts for Habitorium screens
 
 ## Modes
 -	 gandalf
@@ -11,7 +10,7 @@ Cursed and blesses scripts for Habitorium at Bornhack
 -	 Ascii arts
 
 # MQTT 
-what is shown on the screens will be controlable form MQTT, somehting like so
+What is shown on the screens will be controlable form MQTT, somehting like so
 
 > topic /screens/"computer1"/"screen1"/mode <-- set mode
  
@@ -20,12 +19,12 @@ what is shown on the screens will be controlable form MQTT, somehting like so
 
 ## Requirments
 
-the following programs are required for the scripts to work
+The following programs are required for the scripts to work
 
 ```
-	curl
-	Wget
-	mplayer
-	termsaver
+curl
+wget
+feh
+mplayer
+termsaver
 ```
-
