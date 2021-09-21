@@ -1,1 +1,1 @@
-mosquitto_sub -h <host> -t <topic> | xargs -I %output% ./handleMessage.sh %output%
+mosquitto_sub -h jwolf.net -t /bornhack/dome | xargs -I %output% ./handleMessage.sh %output%
