@@ -1,0 +1,73 @@
+% This is the RIPE Database query service.
+% The objects are in RPSL format.
+%
+% The RIPE Database is subject to Terms and Conditions.
+% See http://www.ripe.net/db/support/db-terms-conditions.pdf
+
+% Information related to 'ORG-LABI1-RIPE'
+
+organisation:   ORG-LABI1-RIPE
+org-type:       OTHER
+remarks:        |                           oMMooo
+remarks:        |           ooMMMMMoo     oMMMMMMMMo
+remarks:        |         oMMMMMMMMMMo   MMMMMMMMMMMMo
+remarks:        |        MMMMMMM""         ""MMMMMMMMMMo
+remarks:        |       MMMMM"                "MMMMMMMMMM
+remarks:        |       MMMM                     MMMMMMM"
+remarks:        |        M"                       "MMM"
+remarks:        |                               oMMMMMMoooo
+remarks:        |     ooo                      MMMMMMMMMMMMo
+remarks:        | ooMMMMM                     MMMMMMMMMMMMMM
+remarks:        | MMMMMMM                     MMMMMMMMMMMMMM
+remarks:        | MMMMMMMM                   MMMMMMMMMMMMMM
+remarks:        |  MMMMMMMo                  MMMMMMMMMMMMMM
+remarks:        |  MMMMMMMMo   oooooooooo    MMMMMMMMMMMMM"
+remarks:        |   MMMMMMMMoMMMMMMMMMMMMMMMoMMMMMMMMMMMMM
+remarks:        |    MMMMMMMMMMMMMMMMMMMMMMMMM""""MMMMMM"
+remarks:        |     ""M""" MMMMMMMMMMMMMMMMM       """
+remarks:        |           MMMMMMMMMMMMMMMMMM
+remarks:        |           MMMMMMMMMMMMMMMMMM
+remarks:        |            ""MMMMMMMMMMMMMMM
+remarks:        |                  """"""""
+remarks:        |        _    ____ ___  _ ___ ____ ___
+remarks:        |        |    |__| |__] |  |  |__|  |
+remarks:        |        |___ |  | |__] |  |  |  |  |
+remarks:        |
+remarks:        |           Copenhagen Hackerspace
+remarks:        |
+remarks:
+org-name:       Labitat
+address:        H.C. Oersteds Vej 5, kld.
+address:        1879 Frederiksberg C
+address:        Denmark
+remarks:
+admin-c:        LABI1-RIPE
+tech-c:         LABI1-RIPE
+abuse-c:        LABI1-RIPE
+mnt-ref:        LABITAT-MNT
+mnt-by:         LABITAT-MNT
+created:        2017-09-20T17:11:35Z
+last-modified:  2017-11-24T23:28:13Z
+source:         RIPE # Filtered
+
+role:           Labitat Network Operators
+org:            ORG-LABI1-RIPE
+address:        Labitat Hackerspace
+abuse-mailbox:  abuse@labitat.dk
+admin-c:        ASTO
+admin-c:        THOM45-RIPE
+admin-c:        ESMI1-RIPE
+admin-c:        HAF30-RIPE
+tech-c:         ASTO
+tech-c:         THOM45-RIPE
+tech-c:         ESMI1-RIPE
+tech-c:         HAF30-RIPE
+nic-hdl:        LABI1-RIPE
+mnt-by:         LABITAT-MNT
+created:        2017-09-20T16:45:10Z
+last-modified:  2021-05-27T16:33:04Z
+source:         RIPE # Filtered
+
+% This query was served by the RIPE Database Query Service version 1.101 (WAGYU)
+
+
