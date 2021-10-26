@@ -8,7 +8,7 @@ Help(){
   echo "Syntax: ./e621API.sh [-t|l|u|h]"
   echo "Options:"
   echo "  -t, --tag             Requested tag."
-  echo "  -l, --limit           Limit of posts to fetch."
+  echo "  -l, --limit           Limit of posts to fetch. Default is 50"
   echo "  -s, --safemode        Select Safemode, default is SFW. Options are" 
   echo "                          NSFW, SFW, unsafe, safe, false or true."
   echo "  --slideshow-delay     Time between each image. Default is 1"
@@ -23,11 +23,43 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-# Set variables
+# Default variables
 Tag="comfy"
 Limit=50
 Safemode=true
 SlideshowDelay=1
+
+# Split single string argument with space as a delimiter
+# https://alltodev.com/how-do-i-split-a-string-on-a-delimiter-in-bash
+splitByDelimiter() {
+  arguments=$@
+  IFS=" " # Delimiter
+  read -ra ADDR <<< "$arguments"
+  argv=""
+  
+  for i in "${ADDR[@]}"; do
+    echo "Current i: ${i}"
+    case ${argv} in 
+      -t | --tag) Tag=${i};;
+      -l | --limit) Limit=${i};;
+      -s | --safemode)
+        case ${i} in
+          NSFW | unsafe | false) Safemode=false;;
+          SFW | safe | true) Safemode=true;;
+          "") Safemode=true;;
+          *) Safemode=true;;
+        esac;; 
+      --slideshow-delay) SlideshowDelay=${i};; # feh argument
+      \?) echo "Error: Invalid option" exit;;
+      #*) echo "Error: default case2"; exit;;
+    esac
+    argv=${i}
+  done
+  unset IFS
+  echo "Tag: $Tag"
+  echo "Limit: $Limit"
+  echo "Safemode: $Safemode"
+}
 
 # Read argument input
 # Due to limitaions for getopts and OPTARG, long flags are not possible 
@@ -37,29 +69,39 @@ while [[ "${1}" != "" ]]; do
   case ${1} in
   -t | --tag) Tag=${2};;
   -l | --limit) Limit=${2};;
+
   -s | --safemode)
-    case ${2} in
-      NSFW) Safemode=false;;
-      unsafe) Safemode=false;;
-      false) Safemode=false;;
-      SFW) Safemode=true;;
-      safe) Safemode=true;;
-      true) Safemode=true;;
+    case ${2} in # Safemode: choose second argument
+      NSFW | unsafe | false) Safemode=false;;
+      SFW | safe | true) Safemode=true;;
       "") Safemode=true;;
       *) Safemode=true;;
     esac;;
+
   --slideshow-delay) SlideshowDelay=${2};; # feh argument
   -h | --help) # Display help
     Help
     exit;;
+
   \?) # Invalid option
     echo "Error: Invalid option"
     exit;;
+
   *) # Default case, display help
-    Help
-    exit;;
+    splitByDelimiter ${1} # If argument is one string, split it up
+    echo
+    echo "Tag: $Tag"
+    echo "Limit: $Limit"
+    echo "Safemode: $Safemode"
+    echo "Argument before shift: ${1}"
+    shift 1
+    echo "Argument after shift: ${1}"
+    ;;
+    #echo "Default case" 
+    #Help
+    #exit;;
   esac
-  shift 2
+  shift 2 # Shift arguments left 2 times, i.e. remove processed arguments
 done
 
 if [ $Safemode == false ]; then
@@ -69,11 +111,14 @@ else
 fi
 
 showInputArgumentResults() {
+  echo
+  echo "Parsed arguments:"
   echo "Tag: $Tag"
   echo "Limit: $Limit"
   echo "Safemode: $Safemode"
   echo "Website: $Website"
   echo "Slideshow-delay: $SlideshowDelay"
+  echo
 }
 
 displayImage(){
@@ -82,7 +127,8 @@ displayImage(){
   #     your project name and username
   # There is a rate limit of two requests per second
   callAPI=$(curl -s -A "domeScripts/1.0 (by Chad42Lion)" -H "Accept: application/json" "https://$Website.net/posts.json?tags=$Tag&limit=$Limit" | jq -r '.posts[].file.url')
-
+  echo $callAPI 
+  # > callAPI2.txt
   # --reload=0 option disables reloading of images located on disk, and is included
   # since the warning "feh WARNING: inotify_add_watch failed: No such file or directory"
   # occurs
