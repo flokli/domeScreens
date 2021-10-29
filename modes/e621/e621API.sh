@@ -1,7 +1,14 @@
 #!/bin/bash
+# This program can take arguments and show images from e621 and e926,
+#  related to a tag for the the images. Image viewing is using feh and
+#  JSON given from the site are parsed by jq.
+# The script have been developed with MQTT in mind and have an option
+#  to split up a single argument into multiple arguments
 
+echo "-----------------------------------------";
 echo "Argument(s) given: $@";
 echo "Number of arguments: $#";
+echo;
 
 # Display help message
 Help(){
@@ -25,7 +32,8 @@ Limit=50
 Safemode=true
 SlideshowDelay=1
 
-# Split single string argument with space as a delimiter
+# Split single string argument with space as a delimiter.
+# MQTT sends a single argument that needs to be splitted up
 # https://alltodev.com/how-do-i-split-a-string-on-a-delimiter-in-bash
 splitByDelimiter() {
   if [ $# -eq 0 ]; then 
@@ -33,11 +41,10 @@ splitByDelimiter() {
     exit 1
   fi
   arguments=${@}
-  echo "Arguments in splitByDelimiter: $arguments"
+  echo "Arguments in splitByDelimiter: $arguments"; echo
 
   IFS=" " # Delimiter
   read -ra ADDR <<< "$arguments"
-  argv=""
   
   processArguments ${ADDR[@]} # Parse output to 
   unset IFS
@@ -61,7 +68,7 @@ processArguments() {
         *) Safemode=true;;
       esac;;
 
-    --slideshow-delay) SlideshowDelay=${2};; # feh argument
+    --slideshow-delay) SlideshowDelay=${2};; # feh option
     -h | --help) # Display help
       Help
       exit;;
@@ -69,27 +76,16 @@ processArguments() {
     \?) # Invalid option
       echo "Error: Invalid option"
       exit;;
-
-    #-m) # MQTT message handler
-    #  echo "Argument case: -m"
-    #  echo "Argument 2 for -m case: ${@}"
-    #  splitByDelimiter ${@};;
-    #  #shift 1;; #splitByDelimiter ${2};; #MQTT message flag
     "") echo "Error: Empty argument in flag case"; exit;;
-    *) # Default case, display help
-      echo " Default case"
-      splitByDelimiter ${1} # If argument is one string, split it up
-      echo
-      echo "Tag: $Tag"
-      echo "Limit: $Limit"
-      echo "Safemode: $Safemode"
-      echo "Argument before shift: ${1}"
+    *) # Default case, shift last argument(s)
+      echo "Default case: "
+      echo "  Tag: $Tag"
+      echo "  Limit: $Limit"
+      echo "  Safemode: $Safemode"
+      echo "  Argument before shift: ${1}"
       shift 1
-      echo "Argument after shift: ${1}"
-      ;;
-      #echo "Default case" 
-      #Help
-      #exit;;
+      echo "  Argument after shift: ${1}"
+      echo;;
     esac
     shift 2 # Shift arguments left 2 times, i.e. remove processed arguments
   done
@@ -100,12 +96,15 @@ if [ $# -eq 0 ]; then
   Help; echo "Error: No arguments given"; exit 1
 elif [[ ${@} == "" ]]; then
   Help; echo "Error: Empty argument"; exit 1
+# One argument from MQTT that needs to be spitted up before processing them
 elif [ $# -eq 1 ]; then
   splitByDelimiter ${@};
+# Process multiple arguments
 else
   processArguments ${@};
 fi
 
+# Translate safemode to website
 if [ $Safemode == false ]; then
   Website=e621 #NSFW
 else
@@ -113,13 +112,12 @@ else
 fi
 
 showInputArgumentResults() {
-  echo
   echo "Parsed arguments:"
-  echo "Tag: $Tag"
-  echo "Limit: $Limit"
-  echo "Safemode: $Safemode"
-  echo "Website: $Website"
-  echo "Slideshow-delay: $SlideshowDelay"
+  echo "  Tag: $Tag"
+  echo "  Limit: $Limit"
+  echo "  Safemode: $Safemode"
+  echo "  Website: $Website"
+  echo "  Slideshow-delay: $SlideshowDelay"
   echo
 }
 
@@ -130,7 +128,6 @@ displayImage(){
   # There is a rate limit of two requests per second
   callAPI=$(curl -s -A "domeScripts/1.0 (by Chad42Lion)" -H "Accept: application/json" "https://$Website.net/posts.json?tags=$Tag&limit=$Limit" | jq -r '.posts[].file.url')
   echo $callAPI 
-  # > callAPI2.txt
   # --reload=0 option disables reloading of images located on disk, and is included
   # since the warning "feh WARNING: inotify_add_watch failed: No such file or directory"
   # occurs
@@ -138,5 +135,5 @@ displayImage(){
 }
 
 showInputArgumentResults
-#displayImage
+displayImage
 exit 1;
