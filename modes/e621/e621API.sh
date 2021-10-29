@@ -1,9 +1,12 @@
 #!/bin/bash
 
+echo "Argument(s) given: $@";
+echo "Number of arguments: $#";
+
 # Display help message
 Help(){
   echo "This script requests posts from e621 or e926 related to a tag"
-  echo "Requirements to run script: curl, jq"
+  echo "Requirements to run script: curl, jq, feh"
   echo
   echo "Syntax: ./e621API.sh [-t|l|u|h]"
   echo "Options:"
@@ -16,13 +19,6 @@ Help(){
   echo 
 }
 
-# If no arguments where given as input, print help message
-if [ $# -eq 0 ]; then 
-  Help
-  echo "Error: No arguments given"
-  exit 1
-fi
-
 # Default variables
 Tag="comfy"
 Limit=50
@@ -32,77 +28,83 @@ SlideshowDelay=1
 # Split single string argument with space as a delimiter
 # https://alltodev.com/how-do-i-split-a-string-on-a-delimiter-in-bash
 splitByDelimiter() {
-  arguments=$@
+  if [ $# -eq 0 ]; then 
+    echo "Error: No arguments given to splitByDelimiter()"
+    exit 1
+  fi
+  arguments=${@}
+  echo "Arguments in splitByDelimiter: $arguments"
+
   IFS=" " # Delimiter
   read -ra ADDR <<< "$arguments"
   argv=""
   
-  for i in "${ADDR[@]}"; do
-    echo "Current i: ${i}"
-    case ${argv} in 
-      -t | --tag) Tag=${i};;
-      -l | --limit) Limit=${i};;
-      -s | --safemode)
-        case ${i} in
-          NSFW | unsafe | false) Safemode=false;;
-          SFW | safe | true) Safemode=true;;
-          "") Safemode=true;;
-          *) Safemode=true;;
-        esac;; 
-      --slideshow-delay) SlideshowDelay=${i};; # feh argument
-      \?) echo "Error: Invalid option" exit;;
-      #*) echo "Error: default case2"; exit;;
-    esac
-    argv=${i}
-  done
+  processArguments ${ADDR[@]} # Parse output to 
   unset IFS
-  echo "Tag: $Tag"
-  echo "Limit: $Limit"
-  echo "Safemode: $Safemode"
 }
 
-# Read argument input
+# Read argument input and shift when processed
 # Due to limitaions for getopts and OPTARG, long flags are not possible 
 #   and another solution have been implemented, 
 # Help from https://www.redhat.com/sysadmin/arguments-options-bash-scripts and https://linuxhandbook.com/bash-case-statement/
-while [[ "${1}" != "" ]]; do
-  case ${1} in
-  -t | --tag) Tag=${2};;
-  -l | --limit) Limit=${2};;
+processArguments() {
+  while [[ "$@" != "" ]]; do
+    case ${1} in
+    -t | --tag) Tag=${2};;
+    -l | --limit) Limit=${2};;
 
-  -s | --safemode)
-    case ${2} in # Safemode: choose second argument
-      NSFW | unsafe | false) Safemode=false;;
-      SFW | safe | true) Safemode=true;;
-      "") Safemode=true;;
-      *) Safemode=true;;
-    esac;;
+    -s | --safemode)
+      case ${2} in # Safemode: choose second argument
+        NSFW | unsafe | false) Safemode=false;;
+        SFW | safe | true) Safemode=true;;
+        "") Safemode=true;;
+        *) Safemode=true;;
+      esac;;
 
-  --slideshow-delay) SlideshowDelay=${2};; # feh argument
-  -h | --help) # Display help
-    Help
-    exit;;
+    --slideshow-delay) SlideshowDelay=${2};; # feh argument
+    -h | --help) # Display help
+      Help
+      exit;;
 
-  \?) # Invalid option
-    echo "Error: Invalid option"
-    exit;;
+    \?) # Invalid option
+      echo "Error: Invalid option"
+      exit;;
 
-  *) # Default case, display help
-    splitByDelimiter ${1} # If argument is one string, split it up
-    echo
-    echo "Tag: $Tag"
-    echo "Limit: $Limit"
-    echo "Safemode: $Safemode"
-    echo "Argument before shift: ${1}"
-    shift 1
-    echo "Argument after shift: ${1}"
-    ;;
-    #echo "Default case" 
-    #Help
-    #exit;;
-  esac
-  shift 2 # Shift arguments left 2 times, i.e. remove processed arguments
-done
+    #-m) # MQTT message handler
+    #  echo "Argument case: -m"
+    #  echo "Argument 2 for -m case: ${@}"
+    #  splitByDelimiter ${@};;
+    #  #shift 1;; #splitByDelimiter ${2};; #MQTT message flag
+    "") echo "Error: Empty argument in flag case"; exit;;
+    *) # Default case, display help
+      echo " Default case"
+      splitByDelimiter ${1} # If argument is one string, split it up
+      echo
+      echo "Tag: $Tag"
+      echo "Limit: $Limit"
+      echo "Safemode: $Safemode"
+      echo "Argument before shift: ${1}"
+      shift 1
+      echo "Argument after shift: ${1}"
+      ;;
+      #echo "Default case" 
+      #Help
+      #exit;;
+    esac
+    shift 2 # Shift arguments left 2 times, i.e. remove processed arguments
+  done
+}
+
+# Check if zero, one or more arguments was given.
+if [ $# -eq 0 ]; then
+  Help; echo "Error: No arguments given"; exit 1
+elif [[ ${@} == "" ]]; then
+  Help; echo "Error: Empty argument"; exit 1
+elif [ $# -eq 1 ]; then
+  splitByDelimiter ${@};
+else
+  processArguments ${@};
+fi
 
 if [ $Safemode == false ]; then
   Website=e621 #NSFW
@@ -136,4 +138,5 @@ displayImage(){
 }
 
 showInputArgumentResults
-displayImage
+#displayImage
+exit 1;
