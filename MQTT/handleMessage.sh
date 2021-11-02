@@ -9,12 +9,13 @@ echo;
 Help(){
   echo "MQTT handler to request different modes"
   echo
-  echo "Syntax: ./handlemessage.sh [gan|uni|sexgan|iv|kill]"
+  echo "Syntax: ./handlemessage.sh [gan|uni|sexgan|iv|aa|kill]"
   echo "Options:"
   echo "  gan, gandalf, --gandalf"
   echo "  uni, unicorn, --unicorn"
   echo "  sexgan, sexy-gandalf, --sexy-gandalf"
   echo "  iv, image-viewer, --image-viewer"
+  echo "  aa, asciiArt"
   echo "  kill, --kill"
   echo "  -h, --help            Print this help message"
   echo 
@@ -52,4 +53,11 @@ processArguments() {
   done
 }
 
-processArguments $@
+# Check if zero, one or more arguments was given.
+if [ $# -eq 0 ]; then
+  Help; echo "Error: No arguments given"; exit 1
+elif [[ ${@} == "" ]]; then
+  Help; echo "Error: Empty argument"; exit 1
+else
+  processArguments $@;
+fi
