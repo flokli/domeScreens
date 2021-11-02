@@ -30,7 +30,7 @@ processArguments() {
     iv | image-viewer | --image-viewer) # ./handleMessage.sh iv "--tag bed --limit 10"
       shift 1; 
       ../modes//e621/e621API.sh ${@} &;;
-    aa | asciiArt) cd ../modes/asciiArt/asciiArt.sh; ./asciiArt.sh;
+    aa | asciiArt) cd ../modes/asciiArt/; ./asciiArt.sh;;
     kill | --kill) # Kill processes
       shift 1;
       echo "Killing"; 

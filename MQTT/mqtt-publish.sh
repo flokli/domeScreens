@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: ./mqtt-publist.sh -t TOPIC -m "MESSAGE"
 
-MQTTBroker=$(cat ../../secretFile.txt | head -1 | tail -1)
+MQTTBroker=$(cat ../secretFile.txt | head -1 | tail -1)
 
 
 

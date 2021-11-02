@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MQTTBroker=$(cat ../../secretFile.txt | head -1 | tail -1)
+MQTTBroker=$(cat ../secretFile.txt | head -1 | tail -1)
 
 # if argument given, subscribe to topic 
 # e.g.  sh mqtt-subscribe.sh /home    = subscribe to /home. else subcribe to /
