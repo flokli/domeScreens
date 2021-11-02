@@ -24,12 +24,13 @@ Help(){
 processArguments() {
   while [[ "$@" != "" ]]; do
     case ${1} in
-    gan | gandalf | --gandalf) cd ../modes/playVideo/; ./playGandalf.sh&;;
-    uni | unicorn | --unicorn) cd ../modes/playVideo/; ./playPinkFluffyUnicorn.sh&;;
-    sexgan | sexy-gandalf | --sexy-gandalf) cd ../modes/gandalf-e621/; ./gandalf-e621.sh&;;
+    gan | gandalf | --gandalf) cd ../modes/playVideo/; ./playGandalf.sh;;
+    uni | unicorn | --unicorn) cd ../modes/playVideo/; ./playPinkFluffyUnicorn.sh;;
+    sexgan | sexy-gandalf | --sexy-gandalf) cd ../modes/gandalf-e621/; ./gandalf-e621.sh;;
     iv | image-viewer | --image-viewer) # ./handleMessage.sh iv "--tag bed --limit 10"
       shift 1; 
-      ../modes//e621/e621API.sh ${@};;
+      ../modes//e621/e621API.sh ${@} &;;
+    aa | asciiArt) cd ../modes/asciiArt/asciiArt.sh; ./asciiArt.sh;
     kill | --kill) # Kill processes
       shift 1;
       echo "Killing"; 
