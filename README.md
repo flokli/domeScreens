@@ -13,11 +13,10 @@ The different modes can be found in the [modes directory](./modes/)
 -	 Ascii art
 
 ## MQTT 
-What is shown on the screens will be controlable form MQTT, somehting like so
+Messages will be published to a topic through a MQTT broker and send to subscribers of that topic that will parse the arguments in [MQTT/handlemessage.sh](MQTT/handlemessage.sh). The subscribers will run the corresponding modes script and be shown on the subscribers screen.
 
-> topic /screens/"computer1"/"screen1"/mode <-- set mode
- 
-> topic /screens/"computer1"/"screen1"/tag  <-- set any tags or comands for the chosen mode.
+A topic can look like this
+> /dome/screen
 
 ## Requirments
 
@@ -42,7 +41,8 @@ cd MQTT
 
 ### Help message
 ```bash
-Syntax: ./handlemessage.sh [gan|uni|sexgan|iv|aa|kill]
+Syntax: ./mqtt-publish.sh /some/topic -m "message"
+  Example: ./mqtt-publish.sh /test/topic -m "iv --tag bed --limit 10 --safemode true"
 Options:
   gan, gandalf, --gandalf
   uni, unicorn, --unicorn

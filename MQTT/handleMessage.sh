@@ -14,7 +14,7 @@ Help(){
   echo "  gan, gandalf, --gandalf"
   echo "  uni, unicorn, --unicorn"
   echo "  sexgan, sexy-gandalf, --sexy-gandalf"
-  echo "  iv, image-viewer, --image-viewer"
+  echo "  iv, image-viewer, --image-viewer, e621, anime"
   echo "  aa, asciiArt"
   echo "  kill, --kill"
   echo "  -h, --help            Print this help message"
@@ -28,7 +28,8 @@ processArguments() {
     gan | gandalf | --gandalf) cd ../modes/playVideo/; ./playGandalf.sh;;
     uni | unicorn | --unicorn) cd ../modes/playVideo/; ./playPinkFluffyUnicorn.sh;;
     sexgan | sexy-gandalf | --sexy-gandalf) cd ../modes/gandalf-e621/; ./gandalf-e621.sh;;
-    iv | image-viewer | --image-viewer) # ./handleMessage.sh iv "--tag bed --limit 10"
+    iv | image-viewer | --image-viewer | e621 | e926 | anime) # ./handleMessage.sh iv "--tag bed --limit 10"
+      echo "Image viewer"
       shift 1; 
       ../modes//e621/e621API.sh ${@} &;;
     aa | asciiArt) cd ../modes/asciiArt/; ./asciiArt.sh;;
