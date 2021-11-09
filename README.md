@@ -9,6 +9,7 @@ The different modes can be found in the [modes directory](./modes/)
 -	 gandalf-e621 (NSFW: sexy gandalf and furry)
 -	 e621	(NSFW: Furry)
 -	 e926	(SFW: Furry)
+-  anime/danbooru (NSFW and SFW)
 -	 Pink Fluffy Unicorns Dancing On Rainbows
 -	 Ascii art
 
@@ -17,6 +18,16 @@ Messages will be published to a topic through a MQTT broker and send to subscrib
 
 A topic can look like this
 > /dome/screen
+
+## MQTT broker and api login details
+The file `secretFile.txt.example` must be renamed to `secretFile.txt` and be filled out with a MQTT brokerfor the publisher and subscriber to work correctly. Optinally  you can fill in the API login details for danbooru to make the anime mode work.
+
+The `secretFile.txt` can look like this:
+```
+mqttbroker:example.com
+danbooruUser:user
+danooruPass:password
+```
 
 ## Requirments
 
