@@ -14,7 +14,7 @@ The different modes can be found in the [modes directory](./modes/)
 -	 Ascii art
 
 ## MQTT 
-Messages will be published to a topic through a MQTT broker and send to subscribers of that topic that will parse the arguments in [MQTT/handlemessage.sh](MQTT/handlemessage.sh). The subscribers will run the corresponding modes script and be shown on the subscribers screen.
+Messages will be published to a topic through a MQTT broker and send to subscribers of that topic that will parse the arguments in [MQTT/handlemessage.sh](./MQTT/handleMessage.sh). The subscribers will run the corresponding modes script and be shown on the subscribers screen.
 
 A topic can look like this
 > /dome/screen
@@ -64,7 +64,10 @@ Options:
   -h, --help            Print this help message
 ```
 
-### e621 help message
+### e621
+
+Help message from the [e621API.sh](./modes/e621/e621API.sh) script
+
 ```bash
 Syntax: ./e621API.sh [-t|l|u|m|s|h]
 Options:
@@ -77,6 +80,8 @@ Options:
   -h, --help            Print this help message
 ```
 
+To send multiple tags add a plus (+) between the tags; example `--tag comfy+coffee`. If a tag needs to be filtered out, add a plus and a minus and then the tag; example `--tag witch+-broom`.
+
 ### Kill
 
 * Kill an image viewer mode, send the message `"kill feh"`. 
@@ -84,4 +89,4 @@ Options:
 * Kill AsciiArt, send message `"kill asciiArt"`.
 
 ## CRT 
-The [CRT directory](./crt/) contains files that are needed to run on the small CRT screen, with exepction of the ganfalf video that is located in the [videos direstory](./videos)
+The [CRT directory](./crt/) contains files that are needed to run on the small CRT screen, with exepction of the ganfalf video that is located in the [videos direstory](./videos/)
