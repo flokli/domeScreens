@@ -1,6 +1,6 @@
 # Dome Scripts
-Cursed and blesses scripts for Habitorium screens
 
+This project have been developed to send messages over MQTT in order to run scripts on subscribers machines and show media content on their screens.
 
 ## Modes
 The different modes can be found in the [modes directory](./modes/)
@@ -52,7 +52,7 @@ cd MQTT
 
 ### Help message
 ```bash
-Syntax: ./mqtt-publish.sh /some/topic -m "message"
+Syntax: ./mqtt-publish.sh /some/topic -m "mode and optinal message"
   Example: ./mqtt-publish.sh /test/topic -m "iv --tag bed --limit 10 --safemode true"
 Options:
   gan, gandalf, --gandalf
@@ -64,13 +64,24 @@ Options:
   -h, --help            Print this help message
 ```
 
+### e621 help message
+```bash
+Syntax: ./e621API.sh [-t|l|u|m|s|h]
+Options:
+  -t, --tag             Requested tag.
+  -l, --limit           Limit of posts to fetch. Default is 50
+  -s, --safemode        Select Safemode, default is SFW. Options are
+                          NSFW, SFW, unsafe, safe, false or true.
+  -m, --mode            Select e621 or anime mode. Default e621
+  --slideshow-delay     Time between each image. Default is 1
+  -h, --help            Print this help message
+```
+
 ### Kill
 
-To kill a script give one of the matching messages.
-```
-kill feh
-kill mplayer
-```
+* Kill an image viewer mode, send the message `"kill feh"`. 
+* Kill a mode that show a video, send the message `"kill mplayer"`.
+* Kill AsciiArt, send message `"kill asciiArt"`.
 
 ## CRT 
 The [CRT directory](./crt/) contains files that are needed to run on the small CRT screen, with exepction of the ganfalf video that is located in the [videos direstory](./videos)
