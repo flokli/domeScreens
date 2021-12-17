@@ -1,30 +1,43 @@
 #!/bin/bash
+#
 # This program can take arguments and show images from e621, e926 and danbooru
 #  related to a tag for the the images. Image viewing is using feh and
 #  JSON given from the site are parsed by jq.
+#
 # The script have been developed with MQTT in mind and have an option
 #  to split up a single argument into multiple arguments
+#
+# Dependencies: curl, feh, jq
 
-echo "-----------------------------------------";
-echo "Argument(s) given: $@";
-echo "Number of arguments: $#";
-echo;
 
-# Display help message
+# Print all arguments and amount of arguments
+ArgumentsGiven() {
+cat <<EOF
+-----------------------------------------
+Argument(s) given: $@"
+Number of arguments: $#"
+
+EOF
+}
+
+# Help message displayed i case of no arguments are given, invalid arguments or if '--help' is as argument.
+# Using 'cat << EOF' to output multiline text and avoid using 'echo' for each line.
 Help(){
-  echo "This script requests posts from e621 or e926 related to a tag"
-  echo "Requirements to run script: curl, jq, feh"
-  echo
-  echo "Syntax: ./e621API.sh [-t|l|u|m|s|h]"
-  echo "Options:"
-  echo "  -t, --tag             Requested tag."
-  echo "  -l, --limit           Limit of posts to fetch. Default is 50"
-  echo "  -s, --safemode        Select Safemode, default is SFW. Options are" 
-  echo "                          NSFW, SFW, unsafe, safe, false or true."
-  echo "  -m, --mode            Select e621 or anime mode. Default e621"
-  echo "  --slideshow-delay     Time between each image. Default is 1"
-  echo "  -h, --help            Print this help message"
-  echo 
+cat <<EOF
+This script requests posts from e621 or e926 related to a tag
+Requirements to run script: curl, jq, feh
+
+Syntax: ./e621API.sh [-t|l|u|m|s|h]
+Options:
+  -t, --tag             Requested tag.
+  -l, --limit           Limit of posts to fetch. Default is 50
+  -s, --safemode        Select Safemode, default is SFW. Options are
+                          NSFW, SFW, unsafe, safe, false or true.
+  -m, --mode            Select e621 or anime mode. Default e621
+  --slideshow-delay     Time between each image. Default is 1
+  -h, --help            Print this help message
+
+EOF
 }
 
 # Default variables
@@ -108,24 +121,28 @@ processArguments() {
 }
 
 # Check if zero, one or more arguments was given.
-if [ $# -eq 0 ]; then
-  Help; echo "Error: No arguments given"; exit 1
-elif [[ ${@} == "" ]]; then
-  Help; echo "Error: Empty argument"; exit 1
-# One argument from MQTT that needs to be spitted up before processing them
-elif [ $# -eq 1 ]; then
-  splitByDelimiter ${@};
-# Process multiple arguments
-else
-  processArguments ${@};
-fi
+CheckIfNullInput() {
+  if [ $# -eq 0 ]; then
+    Help; echo "Error: No arguments given"; exit 1
+  elif [[ ${@} == "" ]]; then
+    Help; echo "Error: Empty argument"; exit 1
+  # One argument from MQTT that needs to be spitted up before processing them
+  elif [ $# -eq 1 ]; then
+    splitByDelimiter ${@};
+  # Process multiple arguments
+  else
+    processArguments ${@};
+  fi
+}
 
 # Translate safemode to website
-if [ $Safemode == false ]; then
-  choosenSafemode=explicit #NSFW
-else
-  choosenSafemode=safe #SFW
-fi
+SetSafeMode() {
+  if [ $1 == false ]; then
+    choosenSafemode=explicit #NSFW
+  else
+    choosenSafemode=safe #SFW
+  fi
+}
 
 # Get Danbuuro username and password from secretFile
 danbooruKeys() {
@@ -159,7 +176,6 @@ chooseURL() {
       choosenAPI=$(curl -s -A --user "$danbooruUser:$danbooruPass" -H "Content-Type application/json" "https://danbooru.donmai.us/posts.json?tags=rating%3A$choosenSafemode+$Tag&limit=$Limit" | jq -r --unbuffered '.[].file_url')
       Website="danbooru.donmai.us";;
   esac
-  #echo $choosenAPI
 }
 
 showInputArgumentResults() {
@@ -178,13 +194,39 @@ showInputArgumentResults() {
 # since the warning "feh WARNING: inotify_add_watch failed: No such file or directory"
 # occurs
 displayImage(){ 
-  #echo "Mode: $Mode"
-  #chooseURL ${Mode};
-  #echo $choosenAPI
   feh --auto-zoom --fullscreen --hide-pointer --reload=0 --slideshow-delay $SlideshowDelay $choosenAPI
 }
 
-chooseURL ${Mode};
-showInputArgumentResults
-displayImage
-exit 1;
+# Check if depency is present. 
+# From: https://github.com/sdushantha/tmpmail/blob/8fa8e93aebb4521fa2715c1dc6b76c52ec754345/tmpmail
+CheckDependency() {
+  # Iterate of the array of dependencies and check if the user has them installed.
+  #
+  # dep_missing allows us to keep track of how many dependencies the user is missing
+  # and then print out the missing dependencies once the checking is done.
+  dep_missing=""
+  for dependency in jq feh curl; do
+      if ! command -v "$dependency" >/dev/null 2>&1; then
+          # Append to our list of missing dependencies
+          dep_missing="$dep_missing $dependency"
+      fi
+  done
+
+  if [ "${#dep_missing}" -gt 0 ]; then
+      echo "Could not find the following dependencies:$dep_missing"
+      exit 1
+  fi
+}
+
+Main() {
+  CheckDependency
+  ArgumentsGiven $@
+  CheckIfNullInput $@
+  SetSafeMode ${Safemode}
+  chooseURL ${Mode}
+  showInputArgumentResults
+  displayImage
+  exit 1;
+}
+
+Main "$@"
