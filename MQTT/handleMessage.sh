@@ -25,9 +25,9 @@ Help(){
 processArguments() {
   while [[ "$@" != "" ]]; do
     case ${1} in
-    gan | gandalf | --gandalf) mplayer -fs -loop 0 ../videos/gandalf.mp4 &;;
-    uni | unicorn | --unicorn) mplayer -fs -loop 0 ../videos/caramelldansenWithStropeLigths.mp4 &;;
-    car | caramell | --caramell) mplayer -fs -loop 0 ../videos/caramelldansenWithStropeLigths.mp4 &;;
+    gan | gandalf | --gandalf) mpv  L ../videos/gandalf.mp4 &;;
+    uni | unicorn | --unicorn) mpv  L  ../videos/caramelldansenWithStropeLigths.mp4 &;;
+    car | caramell | --caramell) mpv  L  ../videos/caramelldansenWithStropeLigths.mp4 &;;
     sexgan | sexy-gandalf | --sexy-gandalf) cd ../modes/gandalf-e621/; ./gandalf-e621.sh &;;
     iv | image-viewer | --image-viewer | --e621 | --e926 | --anime) # ./handleMessage.sh "iv --tag bed --limit 10"
       echo "Image viewer"
