@@ -9,11 +9,12 @@ echo;
 Help(){
   echo "MQTT handler to request different modes"
   echo
-  echo "Syntax: ./handlemessage.sh [gan|uni|sexgan|iv|aa|kill]"
+  echo "Syntax: ./handlemessage.sh [gan|uni|car|sexgan|iv|aa|kill]"
   echo "Options:"
   echo "  gan, gandalf, --gandalf"
   echo "  uni, unicorn, --unicorn"
   echo "  sexgan, sexy-gandalf, --sexy-gandalf"
+  echo "  car, caramell, --caramell"
   echo "  iv, image-viewer, --image-viewer, e621, anime"
   echo "  aa, asciiArt"
   echo "  kill, --kill"
@@ -25,9 +26,9 @@ Help(){
 processArguments() {
   while [[ "$@" != "" ]]; do
     case ${1} in
-    gan | gandalf | --gandalf) mplayer -fs -loop 0 ../videos/gandalf.mp4 &;;
-    uni | unicorn | --unicorn) mplayer -fs -loop 0 ../videos/caramelldansenWithStropeLigths.mp4 &;;
-    car | caramell | --caramell) mplayer -fs -loop 0 ../videos/caramelldansenWithStropeLigths.mp4 &;;
+    gan | gandalf | --gandalf) cd ../modes/playVideo/; ./playGandalf.sh &;;
+    uni | unicorn | --unicorn) cd ../modes/playVideo/; ./playPinkFluffyUnicorn.sh &;;
+    car | caramell | --caramell) cd ../modes/playVideo/; ./playCaramelldansen.sh &;;
     sexgan | sexy-gandalf | --sexy-gandalf) cd ../modes/gandalf-e621/; ./gandalf-e621.sh &;;
     iv | image-viewer | --image-viewer | --e621 | --e926 | --anime) # ./handleMessage.sh "iv --tag bed --limit 10"
       echo "Image viewer"
