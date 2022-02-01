@@ -43,6 +43,7 @@ elif  [  "$1" == "mplayer" ]; then
 	#this will kill depending on what you want to kill, at the moment for me this will kill the konsol running the bashs$
 	kill -- ${TreeToArray[4]}
 	kill -- ${TreeToArray[5]}
+	kill -- $GettingProcess
 elif  [  "$1" == "feh" ]; then
 	echo "Kill feh"
 	echo "Getting feh $GettingProcess"
@@ -52,7 +53,7 @@ elif  [  "$1" == "feh" ]; then
 	echo "0 ${TreeToArray[5]}"
 	kill -- ${TreeToArray[4]}
 	kill -- ${TreeToArray[5]}
-	#kill -- $GettingProcess
+	kill -- $GettingProcess
 elif  [  "$1" == "asciiArt" ]; then
 	echo "Kill asciiart"
 	GettingTreeProcess=$(pstree -s -p ${FilterIfMore[0]} | grep -o '([0-9]\+)' | grep -o '[0-9]\+')
