@@ -27,6 +27,7 @@ The `secretFile.txt` can look like this:
 mqttbroker:example.com
 danbooruUser:user
 danooruPass:password
+giphyAPIKey:
 ```
 
 ## Requirments
@@ -89,6 +90,12 @@ To send multiple tags add a plus (+) between the tags; example `--tag comfy+coff
 * Kill an image viewer mode, send the message `"kill feh"`. 
 * Kill a mode that show a video, send the message `"kill mplayer"`.
 * Kill AsciiArt, send message `"kill asciiArt"`.
+
+## Video stops on your potato computer
+Add a fake pulseaudio sink with
+```bash
+pactl load-module module-null-sink
+```
 
 ## CRT 
 The [CRT directory](./crt/) contains files that are needed to run on the small CRT screen, with exepction of the ganfalf video that is located in the [videos direstory](./videos/)
