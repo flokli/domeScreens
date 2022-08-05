@@ -15,6 +15,7 @@ Help(){
   echo "  uni, unicorn, --unicorn"
   echo "  sexgan, sexy-gandalf, --sexy-gandalf"
   echo "  car, caramell, --caramell"
+  echo "  gif, giphy, --giphy"
   echo "  iv, image-viewer, --image-viewer, e621, anime"
   echo "  aa, asciiArt"
   echo "  kill, --kill"
@@ -30,9 +31,13 @@ processArguments() {
     uni | unicorn | --unicorn) cd ../modes/playVideo/; ./playPinkFluffyUnicorn.sh &;;
     car | caramell | --caramell) cd ../modes/playVideo/; ./playCaramelldansen.sh &;;
     sexgan | sexy-gandalf | --sexy-gandalf) cd ../modes/gandalf-e621/; ./gandalf-e621.sh &;;
+    gif | giphy | --giphy) 
+      echo "Giphy"
+      shift 1;
+      cd ../modes/giphy/; ./giphy.sh ${@} &;;
     iv | image-viewer | --image-viewer | --e621 | --e926 | --anime) # ./handleMessage.sh "iv --tag bed --limit 10"
       echo "Image viewer"
-      shift 1; 
+      shift 1;
       ../modes//e621/e621API.sh ${@} &;;
     aa | asciiArt) cd ../modes/asciiArt/; ./asciiArt.sh &;;
     kill | --kill) # Kill processes
