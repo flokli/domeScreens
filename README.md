@@ -14,7 +14,8 @@ The different modes can be found in the [modes directory](./modes/)
 -	 Ascii art
 
 ## MQTT 
-Messages will be published to a topic through a MQTT broker and send to subscribers of that topic that will parse the arguments in [MQTT/handlemessage.sh](./MQTT/handleMessage.sh). The subscribers will run the corresponding modes script and be shown on the subscribers screen.
+Messages will be published to a topic through a MQTT broker and send to subscribers of that topic that will parse the arguments in [MQTT/handlemessage.sh](./MQTT/handleMessage.sh).
+ The subscribers will run the corresponding modes script and be shown on the subscribers screen.
 
 A topic can look like this
 > /dome/screen
@@ -44,6 +45,7 @@ pv (for asciiArt)
 lolcat (for asciiArt)
 mosquitto ? 
 mosquitto-clients ( to recive and hanndle the MQTT messages )
+mpv
 ```
 
 ## Send a message
